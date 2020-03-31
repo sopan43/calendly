@@ -14,6 +14,8 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+console.log(env)
+
 //DB setup
 mongooose.set('useCreateIndex', true);
 const conn = mongooose.connect(`mongodb://${process.env.CALENDLY_DB_USER}:${process.env.CALENDLY_DB_PASSWORD}@${env.db.url}:${env.db.port}/${env.db.databaseName}`, {useNewUrlParser: true, poolSize: 20}, (err) => {
