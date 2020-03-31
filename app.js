@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-console.log(env)
+console.log(process.env.NODE_ENV)
 
 //DB setup
 mongooose.set('useCreateIndex', true);
