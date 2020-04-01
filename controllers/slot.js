@@ -2,9 +2,9 @@
 
 const Slot = require('../models/slot.model');
 
-const jwt = require('../helpers/jwt.helper');
-
-const env = require('../config/' + process.env.NODE_ENV + '.json');
+const {
+    validationResult
+} = require('express-validator/check');
 
 exports.create = (req, res, next) => {
     // const errors = validationResult(req);
@@ -37,6 +37,13 @@ exports.create = (req, res, next) => {
 };
 
 exports.list = (req, res, next) => {
+     const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const error = new Error('Validation failed.');
+        error.statusCode = 422;
+        error.data = errors.array();
+        throw error;
+    }
     let limit = parseInt(req.query.limit) || 10,
         skip = parseInt(req.query.page) || 1,
         filter = {
