@@ -11,4 +11,8 @@ router.post(
   '/create', isAuth ,slotController.create
 );
 
+router.get(
+  '/slots/list', isAuth ,slotController.list
+);
+
 module.exports = router;

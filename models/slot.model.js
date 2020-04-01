@@ -3,7 +3,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const slotsDetailSchema = new Schema({
+const schema = new Schema({
+  user_id: {
+    type: String,
+    required: true
+  },
+  date: {
+      type: Date,
+      required:true
+  },
   start_time:{
     type: String,
     required: true
@@ -18,19 +26,7 @@ const slotsDetailSchema = new Schema({
   },
   booked_by: {
     type: String
-  }
-});
-
-const schema = new Schema({
-  user_id: {
-    type: String,
-    required: true
   },
-  date: {
-      type: Date,
-      required:true
-  },
-  slots: [slotsDetailSchema],
   created_at: {
     type: Date,
     default: Date.now
