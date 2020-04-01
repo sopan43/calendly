@@ -4,5 +4,9 @@
     "url": "ds251804.mlab.com",
     "port": "51804",
     "databaseName": "postman-calendly-develop"
+  },
+  "jwt": {
+    "secret": "secret",
+    "expiration": "30 days"
   }
 }

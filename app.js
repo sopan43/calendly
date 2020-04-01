@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const mongooose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -10,9 +12,20 @@ if (!process.env.NODE_ENV) {
 const env = require('./config/' + process.env.NODE_ENV + '.json');
 let port = process.env.PORT || env.port;
 
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+const authRoutes = require('./routes/auth.route');
+
+app.use(bodyParser.json());
+
+app.use('/auth', authRoutes);
+
+//Error Handling
+app.use((error, req, res, next) => {
+  console.log(error);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
+});
 
 //DB setup
 mongooose.set('useCreateIndex', true);
