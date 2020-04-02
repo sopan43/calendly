@@ -23,6 +23,9 @@ const schema = new Schema({
   booked_by: {
     type: String
   },
+  booking_id: {
+    type: String
+  },
   created_at: {
     type: Date,
     default: Date.now

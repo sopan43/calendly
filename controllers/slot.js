@@ -2,6 +2,7 @@
 
 const Slot = require('../models/slot.model');
 
+var randomize = require('randomatic');
 const {
     validationResult
 } = require('express-validator/check');
@@ -82,7 +83,7 @@ exports.list = (req, res, next) => {
         });
 };
 
-exports.book = exports.list = (req, res, next) => {
+exports.book = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const error = new Error('Validation failed.');
@@ -90,4 +91,40 @@ exports.book = exports.list = (req, res, next) => {
         error.data = errors.array();
         throw error;
     }
+
+    let filter = {
+        _id: req.body.slot_id,
+        is_available: true
+    };
+    let currentDate = new Date(),
+        bookingId = currentDate.getFullYear().toString() + currentDate.getMonth().toString() + currentDate.getDate().toString() + randomize('0', 3).toString();
+
+    let update = {
+        is_available: false,
+        updated_at: currentDate,
+        booked_by: req.userId,
+        booking_id: bookingId
+    }
+
+    Slot.findOneAndUpdate(filter, update, {
+            new: true
+        }).exec()
+        .then(result => {
+            if (!result) {
+                const error = new Error('No avaliable slot found');
+                error.statusCode = 422;
+                error.data = errors.array();
+                throw error;
+            }
+            res.status(200).json({
+                message: 'Booking Done',
+                result: result
+            });
+        })
+        .catch(err => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
+        });
 }
