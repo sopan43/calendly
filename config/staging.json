@@ -1,8 +1,8 @@
 {
   "port": 5001,
   "db": {
-    "url": "ds251804.mlab.com",
-    "port": "51804",
+    "url": "ds331758.mlab.com",
+    "port": "31758",
     "databaseName": "postman-calendly-develop"
   },
   "jwt": {

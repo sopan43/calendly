@@ -5,12 +5,13 @@ const { query } = require('express-validator/check');
 
 const slotController = require('../controllers/slot');
 const isAuth = require('../middleware/is-auth');
+const checkTime = require('../middleware/checkTime');
 const User = require('../models/user.model');
 
 const router = express.Router();
 
 router.post(
-  '/create', isAuth, slotController.create
+  '/create', [isAuth, checkTime], slotController.create
 );
 
 router.get(

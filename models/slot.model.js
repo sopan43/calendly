@@ -8,16 +8,12 @@ const schema = new Schema({
     type: String,
     required: true
   },
-  date: {
-      type: Date,
-      required:true
-  },
   start_time:{
-    type: String,
+    type: Date,
     required: true
   },
   end_time: {
-    type: String,
+    type: Date,
     required: true
   },
   is_available: {
@@ -37,5 +33,11 @@ const schema = new Schema({
   }
 }, {collection: 'slot'});
 
+schema.pre('save', function(next) {
+  let i = 0;
+  console.log(i)
+  i++
+  next();
+});
 
 module.exports = mongoose.model('slot', schema);
