@@ -37,7 +37,7 @@ exports.create = (req, res, next) => {
 };
 
 exports.list = (req, res, next) => {
-     const errors = validationResult(req);
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const error = new Error('Validation failed.');
         error.statusCode = 422;
@@ -55,10 +55,10 @@ exports.list = (req, res, next) => {
                 is_available: true
             }]
         },
-    result = {
-        count: 0,
-        list: []
-    };
+        result = {
+            count: 0,
+            list: []
+        };
 
 
     return Slot.count(filter)
@@ -81,3 +81,13 @@ exports.list = (req, res, next) => {
             next(err);
         });
 };
+
+exports.book = exports.list = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const error = new Error('Validation failed.');
+        error.statusCode = 422;
+        error.data = errors.array();
+        throw error;
+    }
+}

@@ -28,4 +28,8 @@ router.get(
   })], slotController.list
 );
 
+router.put(
+  '/book', [isAuth], slotController.book
+);
+
 module.exports = router;
