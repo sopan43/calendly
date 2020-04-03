@@ -5,6 +5,11 @@
     "port": "31758",
     "databaseName": "postman-calendly-develop"
   },
+  "testDb": {
+    "url": "ds229008.mlab.com",
+    "port": "29008",
+    "databaseName": "postman-calendly-test"
+  },
   "jwt": {
     "secret": "secret",
     "expiration": "30 days"

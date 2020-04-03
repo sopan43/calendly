@@ -36,11 +36,4 @@ const schema = new Schema({
   }
 }, {collection: 'slot'});
 
-schema.pre('save', function(next) {
-  let i = 0;
-  console.log(i)
-  i++
-  next();
-});
-
 module.exports = mongoose.model('slot', schema);

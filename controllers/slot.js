@@ -2,7 +2,8 @@
 
 const Slot = require('../models/slot.model');
 
-var randomize = require('randomatic');
+const randomize = require('randomatic');
+
 const {
     validationResult
 } = require('express-validator/check');
@@ -23,11 +24,14 @@ exports.create = (req, res, next) => {
         }))
     });
 
-    Slot.create(slots)
+    return  Slot.create(slots)
         .then(result => {
-            res.status(201).json({
-                userId: result
+              res.status(201).json({
+                result: result
             });
+            return {
+                result: result
+            }
         })
         .catch(err => {
             if (!err.statusCode) {
@@ -45,13 +49,14 @@ exports.list = (req, res, next) => {
         error.data = errors.array();
         throw error;
     }
+
     let limit = parseInt(req.query.limit) || 10,
         skip = parseInt(req.query.page) || 1,
         filter = {
             $and: [{
                 user_id: req.query.user_id
             }, {
-                date: req.query.date
+                start_time: { $gte: req.query.date }
             }, {
                 is_available: true
             }]
@@ -60,7 +65,6 @@ exports.list = (req, res, next) => {
             count: 0,
             list: []
         };
-
 
     return Slot.count(filter)
         .exec()
@@ -74,6 +78,7 @@ exports.list = (req, res, next) => {
         .then(docs => {
             result.list = docs;
             res.status(200).json(result);
+            return result
         })
         .catch(err => {
             if (!err.statusCode) {
