@@ -7,7 +7,7 @@
     "node": "12.3.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node app.js"
   },
   "repository": {
@@ -29,5 +29,10 @@
     "moment": "^2.24.0",
     "mongoose": "^5.9.7",
     "randomatic": "^3.1.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.1",
+    "sinon": "^9.0.1"
   }
 }
