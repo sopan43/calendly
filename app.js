@@ -16,12 +16,14 @@ let port = process.env.PORT || env.port;
 
 const authRoutes = require('./routes/auth.route');
 const slotRoutes = require('./routes/slot.route');
+const calenderRoutes = require('./routes/calender.route');
 
 //Middlewares
 app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
 app.use('/slot', slotRoutes);
+app.use('/calender', calenderRoutes);
 
 //Error Handling Middleware
 app.use((error, req, res, next) => {

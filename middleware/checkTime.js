@@ -3,9 +3,6 @@
 const Slot = require('../models/slot.model');
 const moment = require('moment')
 
-console.log(Date.now())
-console.log(moment().format())
-
 module.exports = (req, res, next) => {
     req.body.slots.forEach(slot => {
         if(slot.start_time > slot.end_time){
