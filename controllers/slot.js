@@ -24,9 +24,9 @@ exports.create = (req, res, next) => {
         }))
     });
 
-    return  Slot.create(slots)
+    return Slot.create(slots)
         .then(result => {
-              res.status(201).json({
+            res.status(201).json({
                 result: result
             });
             return {
@@ -56,7 +56,9 @@ exports.list = (req, res, next) => {
             $and: [{
                 user_id: req.query.user_id
             }, {
-                start_time: { $gte: req.query.date }
+                start_time: {
+                    $gte: req.query.date
+                }
             }, {
                 is_available: true
             }]
@@ -109,9 +111,14 @@ exports.book = (req, res, next) => {
         updated_at: currentDate,
         booked_by: req.userId,
         booking_id: bookingId
+    };
+
+    let returnObj = {
+        message: 'Booking Done',
+        result: null
     }
 
-    Slot.findOneAndUpdate(filter, update, {
+    return Slot.findOneAndUpdate(filter, update, {
             new: true
         }).exec()
         .then(result => {
@@ -121,15 +128,15 @@ exports.book = (req, res, next) => {
                 error.data = errors.array();
                 throw error;
             }
-            res.status(200).json({
-                message: 'Booking Done',
-                result: result
-            });
+            returnObj.result = result;
+            res.status(200).json(returnObj);
+            return returnObj;
         })
         .catch(err => {
             if (!err.statusCode) {
                 err.statusCode = 500;
             }
             next(err);
+            return err
         });
 }

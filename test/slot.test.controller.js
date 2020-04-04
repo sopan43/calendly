@@ -7,9 +7,11 @@ if (!process.env.NODE_ENV) {
 }
 const env = require('../config/' + process.env.NODE_ENV + '.json');
 
-const Slot = require('../models/user.model');
+const Slot = require('../models/slot.model');
 const User = require('../models/user.model');
 const slotController = require('../controllers/slot');
+
+let slotId = null;
 
 describe('Slot Controller', function () {
     before(function (done) {
@@ -53,6 +55,7 @@ describe('Slot Controller', function () {
         slotController.create(req, res, () => {}).then(result => {
             expect(result).to.have.property('result');
             expect(result.result).to.have.length(2);
+            slotId = result.result[0]._id;
             done();
         }).catch(err => {
             console.log(err);
@@ -84,17 +87,61 @@ describe('Slot Controller', function () {
         })
     });
 
+    it('should book a slot', function (done) {
+        const req = {
+            body: {
+                slot_id: slotId
+            }
+        };
+        const res = {
+            status: function () {
+                return this;
+            },
+            json: function () {}
+        };
+
+        slotController.book(req, res, () => {}).then(result => {
+            expect(result).to.have.property('message', 'Booking Done');
+            expect(result).to.have.property('result');
+            expect(result.result).to.have.property('booking_id');
+            done();
+        }).catch(err => {
+            console.log(err);
+        })
+    });
+
+    it('should give error while booking a slot', function (done) {
+        const req = {
+            body: {
+                slot_id: slotId
+            }
+        };
+        const res = {
+            status: function () {
+                return this;
+            },
+            json: function () {}
+        };
+
+        slotController.book(req, res, () => {}).then(result => {
+            expect(result).to.be.an('error');
+            expect(result).to.have.property('statusCode', 422);
+            done();
+        }).catch(err => {
+            console.log(err);
+        })
+    });
+
     after(function (done) {
         Slot.deleteMany({})
-        .then(() => {
+            .then(() => {
                 return User.deleteMany({})
-
             })
             .then(() => {
                 return mongoose.disconnect();
             })
             .then(() => {
                 done();
-            });
+            })
     });
 });
