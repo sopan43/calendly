@@ -1,4 +1,5 @@
 'use strict';
+const moment = require('moment')
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -8,7 +9,7 @@ const schema = new Schema({
     type: String,
     required: true
   },
-  start_time:{
+  start_time: {
     type: Date,
     required: true
   },
@@ -34,6 +35,14 @@ const schema = new Schema({
     type: Date,
     default: Date.now
   }
-}, {collection: 'slot'});
+}, {
+  collection: 'slot'
+});
+
+schema.post('find', function (result) {
+  result.forEach(element => {
+    element.start_time = moment(element.start_time).utcOffset("+05:30").format();
+  });
+});
 
 module.exports = mongoose.model('slot', schema);
