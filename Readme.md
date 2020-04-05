@@ -5,7 +5,7 @@ For API structure please refer calendly-postman.json file
 
 Signup:- User need to create account and Login to access the APIs. Two user with same email cantnot be created.
 
-Login:- In order to create slots and book them you must me login. After login you get a token which must me pass as Authorization header in all other APIs. (in Postman the recived token will be added as env variable as token. If you get error then please do it manually).
+Login:- In order to create slots and book them you must me login. After login you get a token which must me pass as Authorization header in all other APIs. (in Postman the recived token will be added as postman env variable as token. If you get error then please do it manually).
 
 Create Slots:- You can create your available by giving the details. the end_time cannot be before the start_time and the start_time cannot be less then current time.
 
