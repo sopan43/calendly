@@ -1,9 +1,9 @@
 {
   "port": 5001,
   "db": {
-    "url": "ds331758.mlab.com",
-    "port": "31758",
-    "databaseName": "postman-calendly-develop"
+    "url": "ds243805.mlab.com",
+    "port": "43805",
+    "databaseName": "postman-calendly"
   },
   "testDb": {
     "url": "ds229008.mlab.com",
