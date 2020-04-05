@@ -69,13 +69,15 @@ exports.addEvent = (req, res, next) => {
             return addEvent(auth, booking)
         })
         .then(event => {
-            res.status(200).json(returnObj);
+           res.status(200).json(returnObj);
+           return returnObj;
         })
         .catch(err => {
             if (!err.statusCode) {
                 err.statusCode = 500;
             }
             next(err);
+            return err
         });
 };
 
