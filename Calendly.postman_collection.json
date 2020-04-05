@@ -1,0 +1,237 @@
+{
+	"info": {
+		"_postman_id": "c0ae131d-7aed-466b-b5ef-55d8069febaa",
+		"name": "Calendly",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SignUp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"sopanmittal43@gmail.com\",\n\t\"password\": \"Sopanmittal\",\n\t\"name\": \"sopan\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-calendly.herokuapp.com/auth/signup",
+					"protocol": "https",
+					"host": [
+						"postman-calendly",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5e729176-d218-434e-8b52-c3b2f911d1ef",
+						"exec": [
+							"var data = JSON.parse(responseBody)",
+							"pm.environment.set('token', data.token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"sopanmittal43@gmail.com\",\n\t\"password\": \"Sopanmittal\",\n\t\"name\": \"sopan\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-calendly.herokuapp.com/auth/login",
+					"protocol": "https",
+					"host": [
+						"postman-calendly",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Slots",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"slots\": [\n\t\t{\n\t\t\t\"start_time\": \"2020-04-08T10:00:00.000\",\n\t\t\t\"end_time\": \"2020-04-08T11:00:00.000\"\n\t\t},\n\t\t{\n\t\t\t\"start_time\": \"2020-04-08T11:00:00.000\",\n\t\t\t\"end_time\": \"2020-04-08T12:00:00.000\"\n\t\t}\n\t\t]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-calendly.herokuapp.com/slot/create",
+					"protocol": "https",
+					"host": [
+						"postman-calendly",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"slot",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Slots",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://postman-calendly.herokuapp.com/slot/slots/list?user_id=5e888d2ff371e40017f699da&page=1&limit=10&date=2020-04-08",
+					"protocol": "https",
+					"host": [
+						"postman-calendly",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"slot",
+						"slots",
+						"list"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "5e888d2ff371e40017f699da"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "date",
+							"value": "2020-04-08"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book Slot",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"slot_id\": \"5e88cb606f5e7f2bdec86f17aaaa\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-calendly.herokuapp.com/slot/book",
+					"protocol": "https",
+					"host": [
+						"postman-calendly",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"slot",
+						"book"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add to Google Calender",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"booking_id\": \"202035979\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-calendly.herokuapp.com/calender/addevent",
+					"protocol": "https",
+					"host": [
+						"postman-calendly",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"calender",
+						"addevent"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
