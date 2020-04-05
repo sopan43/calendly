@@ -1,12 +1,31 @@
 {
   "port": 5001,
   "db": {
-    "url": "ds251804.mlab.com",
-    "port": "51804",
+    "url": "ds331758.mlab.com",
+    "port": "31758",
     "databaseName": "postman-calendly-develop"
+  },
+  "testDb": {
+    "url": "ds229008.mlab.com",
+    "port": "29008",
+    "databaseName": "postman-calendly-test"
   },
   "jwt": {
     "secret": "secret",
     "expiration": "30 days"
-  }
+  },
+  "googleAPI": {
+    "installed":{
+       "client_id":"857810377429-08i5a1m50l9dmca49il42hc0gj1tg6ud.apps.googleusercontent.com",
+       "project_id":"postman-1585815492673",
+       "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+       "token_uri":"https://oauth2.googleapis.com/token",
+       "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+       "client_secret":"8VYGFhah0X6hANHcTNQ3_QbH",
+       "redirect_uris":[
+          "urn:ietf:wg:oauth:2.0:oob",
+          "http://localhost"
+       ]
+    }
+ }
 }
