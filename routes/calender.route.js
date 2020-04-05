@@ -11,18 +11,7 @@ const router = express.Router();
 
 
 router.post(
-  '/addevent', [isAuth, body('booking_id').custom((value, {
-    req
-  }) => {
-    return Slot.findOne({
-        booking_id: value,
-        booked_by: req.userId
-    }).then(doc => {
-      if (!doc) {
-        return Promise.reject('You dont have access to this booking!');
-      }
-    });
-  })], googleCalender.addEvent
+  '/addevent', isAuth, googleCalender.addEvent
 );
 
 

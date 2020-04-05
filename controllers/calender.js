@@ -37,29 +37,39 @@ exports.addEvent = (req, res, next) => {
     let booking;
     return Slot.find({
             booking_id: req.body.booking_id,
-            booked_by: req.userId
+            $or: [{
+                    booked_by: req.userId
+                },
+                {
+                    user_id: req.userId
+                }
+            ]
         }).lean().exec()
         .then(bookingObj => {
+            if(bookingObj.length === 0 ) {
+                const error = new Error('You dont habe access to booking or invalid booking id.');
+                error.statusCode = 422;
+                error.data = errors.array();
+                throw error;
+            }
             booking = bookingObj[0];
-            return User.findById({
-                _id: booking.user_id
+            return User.find({
+                $or: [{
+                    _id: booking.user_id
+                }, {
+                    _id: booking.booked_by
+                }]
             })
         })
-        .then(creator => {
-            booking.creator = creator;
-            return User.findById({
-                _id: booking.booked_by
-            })
-        }) 
-        .then(user => { //user is the user has made the booking
-            booking.user = user
-            return authorize(credentials)
+        .then(attendees => {
+            booking.attendees = attendees;
+            return authorize(credentials);
         })
         .then(auth => {
             return addEvent(auth, booking)
         })
         .then(event => {
-            res.status(200).json(bookingObj);
+            res.status(200).json(returnObj);
         })
         .catch(err => {
             if (!err.statusCode) {
@@ -101,11 +111,6 @@ function authorize(credentials) {
 
 }
 
-
-
-
-
-
 function addEvent(auth, booking) {
     var event = getEventObj(booking)
     const calendar = google.calendar({
@@ -121,7 +126,7 @@ function addEvent(auth, booking) {
         }, function (err, event) {
             if (err) {
                 const error = new Error('There was an error contacting the Calendar service: ' + err);
-            error.statusCode = 422;
+                error.statusCode = 422;
                 reject(error);
             }
             resolve('Event created: ', event);
@@ -131,7 +136,7 @@ function addEvent(auth, booking) {
 }
 
 function getEventObj(booking) {
-    return {
+    let returnObj = {
         'summary': 'Your upcomming meetings',
         'description': `You have a meeting schedule with`,
         'start': {
@@ -145,18 +150,17 @@ function getEventObj(booking) {
         'recurrence': [
             'RRULE:FREQ=DAILY;COUNT=2'
         ],
-        'attendees': [{
-                'email': booking.creator.email,
-                'sendNotifications': true
-            },
-            {
-                'email': booking.user.email,
-                'sendNotifications': true
-            },
-        ],
+        'attendees': [],
         'reminders': {
             'useDefault': 'useDefault'
         }
     };
 
+    booking.attendees.forEach(attende => {
+        returnObj.attendees.push({
+            'email': attende.email,
+            'sendNotifications': true
+        });
+    });
+    return returnObj;
 }
