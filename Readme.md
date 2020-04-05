@@ -18,8 +18,11 @@ Add to google calender:- By giving the booking _id you can add this to you googl
 ## Development Notes
 
 Language:- NodeJS (v12.3.1)
+
 Framework:- Express
+
 Database:- MongoDB (mLab as cloud DB sloution)
+
 Server:- Heroku
 
 
