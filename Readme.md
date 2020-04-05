@@ -1,7 +1,7 @@
 # CALENDLY: booking you meetings without making a trouble of emails
 
 ## Highlights
-For API structure please refer calendly-postman.json file
+For API structure please refer Calendly.postman_collection.json file
 
 Signup:- User need to create account and Login to access the APIs. Two user with same email cantnot be created.
 
