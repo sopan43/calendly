@@ -143,9 +143,6 @@ function getEventObj(booking) {
             'dateTime': booking.end_time,
             'timeZone': 'Asia/Calcutta',
         },
-        'recurrence': [
-            'RRULE:FREQ=DAILY;COUNT=2'
-        ],
         'attendees': [],
         'reminders': {
             'useDefault': 'useDefault'
