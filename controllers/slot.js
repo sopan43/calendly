@@ -1,6 +1,7 @@
 'use strict';
 
 const Slot = require('../models/slot.model');
+const Booking = require('../models/booking.model');
 
 const randomize = require('randomatic');
 
@@ -109,7 +110,6 @@ exports.book = (req, res, next) => {
     let update = {
         is_available: false,
         updated_at: currentDate,
-        booked_by: req.userId,
         booking_id: bookingId
     };
 
@@ -128,7 +128,17 @@ exports.book = (req, res, next) => {
                 error.data = errors.array();
                 throw error;
             }
-            returnObj.result = result;
+            let booking = new Booking({
+                created_by: req.userId,
+                attendees: [{user_id:req.userId}, {user_id: result.user_id}],
+                booking_id: bookingId,
+                start_time: result.start_time,
+                end_time: result.end_time
+            })
+            return booking.save();
+        })
+        .then(bookingObj => {
+            returnObj.result = bookingObj;
             res.status(200).json(returnObj);
             return returnObj;
         })

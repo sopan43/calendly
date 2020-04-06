@@ -91,7 +91,8 @@ describe('Slot Controller', function () {
         const req = {
             body: {
                 slot_id: slotId
-            }
+            },
+            userId: '5c0f66b979af55031b34728a'
         };
         const res = {
             status: function () {
@@ -114,7 +115,8 @@ describe('Slot Controller', function () {
         const req = {
             body: {
                 slot_id: slotId
-            }
+            },
+            userId: '5c0f66b979af55031b34728a'
         };
         const res = {
             status: function () {
