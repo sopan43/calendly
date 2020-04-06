@@ -7,7 +7,7 @@ if (!process.env.NODE_ENV) {
 }
 const env = require('../config/' + process.env.NODE_ENV + '.json');
 
-const Slot = require('../models/slot.model');
+const Booking = require('../models/booking.model');
 const User = require('../models/user.model');
 const calenderController = require('../controllers/calender');
 
@@ -33,13 +33,19 @@ describe('Calender Controller', function () {
                 return User.create(user);
             })
             .then(() => {
-                const slot = new Slot({
-                    user_id: '5c0f66b979af55031b34728a',
+                const slot = new Booking({
+                    created_by: '5c0f66b979af55031b34728a',
                     start_time: "2020-04-03T10:00:00.000Z",
                     end_time: "2020-04-03T11:00:00.000Z",
-                    created_by: '5c0f66b979af55031b34728a',
                     booking_id: '20200405123',
-                    _id: '5e870f336270a265d2245566'
+                    _id: '5e870f336270a265d2245566',
+                    attendees: [
+                        {
+                        user_id: '5c0f66b979af55031b34728a'
+                    }, {
+                        user_id: '5e888d2ff371e40017f699da'
+                    }
+                ]
     
                 })
                return slot.save();
@@ -48,7 +54,7 @@ describe('Calender Controller', function () {
                 done();
             })
             .catch(err => {
-                console.log("----------------", err);
+                console.log(err);
                 done();
             })
     });
@@ -69,7 +75,7 @@ describe('Calender Controller', function () {
 
         calenderController.addEvent(req, res, () => {}).then(result => {
             expect(result).to.be.an('error');
-            expect(result).to.have.property('message', 'You dont habe access to booking or invalid booking id.');
+            expect(result).to.have.property('message', 'Invalid booking id.');
             expect(result).to.have.property('statusCode', 422);
             done();
         }).catch(err => {
@@ -99,7 +105,7 @@ describe('Calender Controller', function () {
     });
 
     after(function (done) {
-        Slot.deleteMany({})
+        Booking.deleteMany({})
             .then(() => {
                 return User.deleteMany({})
             })

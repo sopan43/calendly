@@ -1,6 +1,6 @@
 'use strict';
 
-const Slot = require('../models/slot.model');
+const Booking = require('../models/booking.model');
 const User = require('../models/user.model');
 
 const {
@@ -35,37 +35,31 @@ exports.addEvent = (req, res, next) => {
         throw error;
     }
     let booking;
-    return Slot.find({
-            booking_id: req.body.booking_id,
-            $or: [{
-                    booked_by: req.userId
-                },
-                {
-                    user_id: req.userId
-                }
-            ]
-        }).lean().exec()
+    return Booking.find({
+            booking_id: req.body.booking_id}).lean().exec()
         .then(bookingObj => {
-            if(bookingObj.length === 0 ) {
-                const error = new Error('You dont habe access to booking or invalid booking id.');
+            if (bookingObj.length === 0) {
+                const error = new Error('Invalid booking id.');
                 error.statusCode = 422;
-                error.data = errors.array();
+                throw error;
+            }
+            let user = bookingObj[0].attendees.find(attendee=> attendee.user_id = req.userId)            
+            if(user === undefined) {
+                const error = new Error('You dont habe access to booking.');
+                error.statusCode = 422;
                 throw error;
             }
             booking = bookingObj[0];
+            let attendee = bookingObj[0].attendees.map(attendee => {return {_id: attendee.user_id}});
             return User.find({
-                $or: [{
-                    _id: booking.user_id
-                }, {
-                    _id: booking.booked_by
-                }]
+                $or: attendee
             })
         })
         .then(attendees => {
             booking.attendees = attendees;
             return authorize(credentials);
         })
-        .then(auth => {
+        .then(auth => {            
             return addEvent(auth, booking)
         })
         .then(event => {

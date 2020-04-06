@@ -21,9 +21,6 @@ const schema = new Schema({
     type: Boolean,
     default: true
   },
-  booked_by: {
-    type: String
-  },
   booking_id: {
     type: String
   },
