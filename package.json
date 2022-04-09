@@ -27,7 +27,7 @@
     "express-validator": "^6.4.0",
     "googleapis": "^39.2.0",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.9.7",
     "randomatic": "^3.1.1"
   },
